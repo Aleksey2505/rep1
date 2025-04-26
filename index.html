@@ -1,0 +1,365 @@
+<script type="text/javascript">
+    var gk_isXlsx = false;
+    var gk_xlsxFileLookup = {};
+    var gk_fileData = {};
+    function filledCell(cell) {
+      return cell !== '' && cell != null;
+    }
+    function loadFileData(filename) {
+    if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+        try {
+            var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+            var firstSheetName = workbook.SheetNames[0];
+            var worksheet = workbook.Sheets[firstSheetName];
+
+            // Convert sheet to JSON to filter blank rows
+            var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+            // Filter out blank rows (rows where all cells are empty, null, or undefined)
+            var filteredData = jsonData.filter(row => row.some(filledCell));
+
+            // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+            var headerRowIndex = filteredData.findIndex((row, index) =>
+              row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+            );
+            // Fallback
+            if (headerRowIndex === -1 || headerRowIndex > 25) {
+              headerRowIndex = 0;
+            }
+
+            // Convert filtered JSON back to CSV
+            var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+            csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+            return csv;
+        } catch (e) {
+            console.error(e);
+            return "";
+        }
+    }
+    return gk_fileData[filename] || "";
+    }
+    </script><!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="description" content="Портфолио Алексея Кузнецова - ИИ, игры и ПО">
+<title>Алексей Кузнецов - Портфолио</title>
+<link rel="stylesheet" href="styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div id="preloader">
+    <div class="bio-pulse">ЗАГРУЗКА...</div>
+</div>
+<div id="futuristic-bg"></div>
+<button id="nav-btn" class="bio-btn" aria-label="Переключить меню навигации">☰</button>
+<button id="theme-toggle" class="theme-btn" aria-label="Переключить тему">🌙</button>
+<button id="lang-toggle" class="lang-btn" aria-label="Переключить язык">EN</button>
+<header>
+    <div class="container">
+        <div class="logo">
+            <img src="images/logo.jpg" alt="" class="logo-img">
+            <span id="header-name">Сделанные проекты и реализуемые</span>
+        </div>
+    </div>
+</header>
+<nav id="nav-menu" class="nav-modal" role="navigation">
+    <a href="#home" aria-label="Главная" data-lang-key="nav-home">Главная</a>
+    <a href="#projects" aria-label="Проекты" data-lang-key="nav-projects">Проекты</a>
+    <a href="#about" aria-label="Обо мне" data-lang-key="nav-about">Обо мне</a>
+    <a href="#contact" aria-label="Контакты" data-lang-key="nav-contact">Контакты</a>
+</nav>
+<main>
+    <section id="home" class="bio-hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="name-container">
+                    <h1 class="bio-drip shimmer" id="hero-name" data-lang-key="hero-name" aria-live="polite">Алексей Кузнецов</h1>
+                </div>
+                <div class="geometric-orb" aria-label="Декоративный элемент - геометрическая сфера"></div>
+                <p data-lang-key="hero-desc">Привет, я Алексей Кузнецов! Программист, создающий ИИ, игры и ПО. От нейронных сетей до увлекательных игр — я создаю впечатления, которые вдохновляют. Давай создадим что-то невероятное!</p>
+            </div>
+        </div>
+    </section>
+    <div class="section-divider"></div>
+    <section id="projects" aria-labelledby="projects-heading">
+        <div class="container">
+            <h2 id="projects-heading" class="shimmer" data-lang-key="projects-heading">Проекты</h2>
+            <p class="project-count" data-lang-key="project-count">Всего: <span id="total-projects">20</span> | Показано: <span id="visible-projects">20</span></p>
+            <div class="search-bar">
+                <input type="text" id="project-search" placeholder="Поиск проектов..." aria-label="Поиск проектов" data-lang-key="search-placeholder">
+            </div>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all" aria-label="Показать все проекты" data-lang-key="filter-all">Все 🧬</button>
+                <button class="filter-btn" data-filter="ai" aria-label="Показать проекты ИИ" data-lang-key="filter-ai">ИИ 🧠</button>
+                <button class="filter-btn" data-filter="game" aria-label="Показать игры" data-lang-key="filter-games">Игры 🎮</button>
+                <button class="filter-btn" data-filter="software" aria-label="Показать ПО" data-lang-key="filter-software">ПО ⚙️</button>
+                <button class="filter-btn" data-filter="vision" aria-label="Показать проекты компьютерного зрения" data-lang-key="filter-vision">Зрение 👁️</button>
+            </div>
+            <div class="project-grid" id="project-grid" role="list"></div>
+        </div>
+    </section>
+    <div class="section-divider"></div>
+    <section id="about" aria-labelledby="about-heading">
+        <div class="container">
+            <h2 id="about-heading" class="shimmer" data-lang-key="about-heading">Обо мне</h2>
+            <div class="bio-terminal">
+                <div class="terminal-header">
+                    <span class="terminal-btn red"></span>
+                    <span class="terminal-btn yellow"></span>
+                    <span class="terminal-btn green"></span>
+                </div>
+                <div class="terminal-body">
+                    <p><span class="prompt">></span> <span class="command" data-lang-key="terminal-identify">ИДЕНТИФИКАЦИЯ</span></p>
+                    <p class="output" id="terminal-name" data-lang-key="terminal-name">Алексей Кузнецов - Разработчик</p>
+                    <p><span class="prompt">></span> <span class="command" data-lang-key="terminal-skills">НАВЫКИ</span></p>
+                    <div id="skills-list" class="skills-list" role="list">
+                        <div class="skill-cube" role="listitem">
+                            <div class="cube">
+                                <div class="face front">Python</div>
+                                <div class="face back">🐍</div>
+                                <div class="face left">Python</div>
+                                <div class="face right">🐍</div>
+                                <div class="face top">Python</div>
+                                <div class="face bottom">🐍</div>
+                            </div>
+                        </div>
+                        <div class="skill-cube" role="listitem">
+                            <div class="cube">
+                                <div class="face front">JavaScript</div>
+                                <div class="face back">🌐</div>
+                                <div class="face left">JavaScript</div>
+                                <div class="face right">🌐</div>
+                                <div class="face top">JavaScript</div>
+                                <div class="face bottom">🌐</div>
+                            </div>
+                        </div>
+                        <div class="skill-cube" role="listitem">
+                            <div class="cube">
+                                <div class="face front">Kotlin</div>
+                                <div class="face back">🤖</div>
+                                <div class="face left">Kotlin</div>
+                                <div class="face right">🤖</div>
+                                <div class="face top">Kotlin</div>
+                                <div class="face bottom">🤖</div>
+                            </div>
+                        </div>
+                        <div class="skill-cube" role="listitem">
+                            <div class="cube">
+                                <div class="face front">C++</div>
+                                <div class="face back">⚡</div>
+                                <div class="face left">C++</div>
+                                <div class="face right">⚡</div>
+                                <div class="face top">C++</div>
+                                <div class="face bottom">⚡</div>
+                            </div>
+                        </div>
+                    </div>
+                    <p><span class="prompt">></span> <span class="command" data-lang-key="terminal-creations">СОЗДАНИЯ</span></p>
+                    <p class="output" data-lang-key="terminal-projects">20+ проектов</p>
+                </div>
+            </div>
+            <div class="life-timeline">
+                <h3 class="shimmer" data-lang-key="timeline-heading">Линия жизни</h3>
+                <p class="timeline-desc" data-lang-key="timeline-desc">Каждый заполненный квадрат — это прожитая неделя с 10 мая 2004 года</p>
+                <div class="timeline-grid" id="timeline-grid" role="grid"></div>
+            </div>
+        </div>
+    </section>
+    <div class="section-divider"></div>
+    <section id="contact" aria-labelledby="contact-heading">
+        <div class="container">
+            <h2 id="contact-heading" class="shimmer" data-lang-key="contact-heading">Контакты</h2>
+            <div class="contact-links">
+                <a href="text/portfolio.pdf" class="btn" download aria-label="Скачать резюме" data-lang-key="contact-resume">Скачать резюме</a>
+                <a href="/cdn-cgi/l/email-protection#e0978385948e858d81898ca0879a838f928e87ce818d8f" class="btn" aria-label="Электронная почта">📧 Email</a>
+                <a href="https://t.me/Whatmeanbetter" class="btn" aria-label="Телеграм">🌌 Telegram</a>
+                <a class="btn copy-email" data-email="ak2205781@gmail.com" aria-label="Скопировать email" data-lang-key="contact-copy-email">Скопировать Email</a>
+            </div>
+            <form id="contact-form" class="bio-panel" novalidate>
+                <div class="form-group">
+                    <input type="text" name="name" placeholder="Ваше имя" required aria-label="Ваше имя" data-lang-key="form-name">
+                </div>
+                <div class="form-group">
+                    <input type="email" name="email" placeholder="Ваш Email" required aria-label="Ваш Email" data-lang-key="form-email">
+                </div>
+                <div class="form-group">
+                    <textarea name="message" placeholder="Ваше сообщение" required aria-label="Ваше сообщение" data-lang-key="form-message"></textarea>
+                </div>
+                <button type="submit" class="btn" aria-label="Отправить форму контактов" data-lang-key="form-submit">Отправить</button>
+            </form>
+        </div>
+    </section>
+</main>
+<div class="modal" id="modal1" role="dialog" aria-labelledby="modal1-title">
+    <div class="modal-content">
+        <span class="close-btn" aria-label="Закрыть">×</span>
+        <h3 id="modal1-title" class="shimmer" data-lang-key="modal1-title">Бот для криптовалютного рынка</h3>
+        <img src="images/1.png" alt="Бот для криптовалютного рынка" loading="lazy">
+        <p data-lang-key="modal1-desc">Бот с ИИ для торговли криптовалютой в реальном времени.</p>
+    </div>
+</div>
+<div class="modal" id="modal2" role="dialog" aria-labelledby="modal2-title">
+    <div class="modal-content">
+        <span class="close-btn" aria-label="Закрыть">×</span>
+        <h3 id="modal2-title" class="shimmer" data-lang-key="modal2-title">Калькулятор расстояния до визуальных объектов</h3>
+        <img src="images/2.png" alt="Калькулятор расстояния до визуальных объектов" loading="lazy">
+        <p data-lang-key="modal2-desc">Калькулятор расстояния на основе компьютерного зрения.</p>
+    </div>
+</div>
+<div class="modal" id="modal3" role="dialog" aria-labelledby="modal3-title">
+    <div class="modal-content">
+        <span class="close-btn" aria-label="Закрыть">×</span>
+        <h3 id="modal3-title" class="shimmer" data-lang-key="modal3-title">Распознавание жестов</h3>
+        <img src="images/3.png" alt="Распознавание жестов" loading="lazy">
+        <p data-lang-key="modal3-desc">Система ИИ для управления с помощью жестов.</p>
+    </div>
+</div>
+<div class="modal" id="modal4" role="dialog" aria-labelledby="modal4-title">
+    <div class="modal-content">
+        <span class="close-btn" aria-label="Закрыть">×</span>
+        <h3 id="modal4-title" class="shimmer" data-lang-key="modal4-title">Виджет для перерывов глаз</h3>
+        <img src="images/4.png" alt="Виджет для перерывов глаз" loading="lazy">
+        <p data-lang-key="modal4-desc">Инструмент для напоминания о перерывах от экрана.</p>
+    </div>
+</div>
+<div class="modal" id="modal5" role="dialog" aria-labelledby="modal5-title">
+    <div class="modal-content">
+        <span class="close-btn" aria-label="Закрыть">×</span>
+        <h3 id="modal5-title" class="shimmer" data-lang-key="modal5-title">Клон OSU!</h3>
+        <img src="images/5.png" alt="Клон OSU!" loading="lazy">
+        <p data-lang-key="modal5-desc">Клон ритм-игры, созданный с помощью Pygame.</p>
+    </div>
+</div>
+<div class="modal" id="modal6" role="dialog" aria-labelledby="modal6-title">
+    <div class="modal-content">
+        <span class="close-btn" aria-label="Закрыть">×</span>
+        <h3 id="modal6-title" class="shimmer" data-lang-key="modal6-title">Три наперстка</h3>
+        <img src="images/6.png" alt="Три наперстка" loading="lazy">
+        <p data-lang-key="modal6-desc">Цифровая версия классической игры на удачу.</p>
+    </div>
+</div>
+<div class="modal" id="modal7" role="dialog" aria-labelledby="modal7-title">
+    <div class="modal-content">
+        <span class="close-btn" aria-label="Закрыть">×</span>
+        <h3 id="modal7-title" class="shimmer" data-lang-key="modal7-title">Шахматный ИИ</h3>
+        <img src="images/7.png" alt="Шахматный ИИ" loading="lazy">
+        <p data-lang-key="modal7-desc">ИИ для игры в шахматы с адаптивной сложностью.</p>
+    </div>
+</div>
+<div class="modal" id="modal8" role="dialog" aria-labelledby="modal8-title">
+    <div class="modal-content">
+        <span class="close-btn" aria-label="Закрыть">×</span>
+        <h3 id="modal8-title" class="shimmer" data-lang-key="modal8-title">Клон Geometry Dash</h3>
+        <img src="images/8.png" alt="Клон Geometry Dash" loading="lazy">
+        <p data-lang-key="modal8-desc">Динамичная игра-платформер.</p>
+    </div>
+</div>
+<div class="modal" id="modal9" role="dialog" aria-labelledby="modal9-title">
+    <div class="modal-content">
+        <span class="close-btn" aria-label="Закрыть">×</span>
+        <h3 id="modal9-title" class="shimmer" data-lang-key="modal9-title">Нейронная сеть NERPA</h3>
+        <img src="images/9.png" alt="Нейронная сеть NERPA" loading="lazy">
+        <p data-lang-key="modal9-desc">Модель глубокого обучения для обработки текста.</p>
+    </div>
+</div>
+<div class="modal" id="modal10" role="dialog" aria-labelledby="modal10-title">
+    <div class="modal-content">
+        <span class="close-btn" aria-label="Закрыть">×</span>
+        <h3 id="modal10-title" class="shimmer" data-lang-key="modal10-title">Калькулятор крыльев</h3>
+        <img src="images/10.png" alt="Калькулятор крыльев" loading="lazy">
+        <p data-lang-key="modal10-desc">Инструмент для аэродинамического анализа крыльев.</p>
+    </div>
+</div>
+<div class="modal" id="modal11" role="dialog" aria-labelledby="modal11-title">
+    <div class="modal-content">
+        <span class="close-btn" aria-label="Закрыть">×</span>
+        <h3 id="modal11-title" class="shimmer" data-lang-key="modal11-title">Система управления складом</h3>
+        <img src="images/11.png" alt="Система управления складом" loading="lazy">
+        <p data-lang-key="modal11-desc">Система управления складскими запасами.</p>
+    </div>
+</div>
+<div class="modal" id="modal12" role="dialog" aria-labelledby="modal12-title">
+    <div class="modal-content">
+        <span class="close-btn" aria-label="Закрыть">×</span>
+        <h3 id="modal12-title" class="shimmer" data-lang-key="modal12-title">3D Блокнот</h3>
+        <img src="images/12.png" alt="3D Блокнот" loading="lazy">
+        <p data-lang-key="modal12-desc">Интерактивное приложение для заметок в 3D.</p>
+    </div>
+</div>
+<div class="modal" id="modal13" role="dialog" aria-labelledby="modal13-title">
+    <div class="modal-content">
+        <span class="close-btn" aria-label="Закрыть">×</span>
+        <h3 id="modal13-title" class="shimmer" data-lang-key="modal13-title">ИИ-композитор музыки</h3>
+        <img src="images/13.png" alt="ИИ-композитор музыки" loading="lazy">
+        <p data-lang-key="modal13-desc">ИИ для создания музыкальных композиций.</p>
+    </div>
+</div>
+<div class="modal" id="modal14" role="dialog" aria-labelledby="modal14-title">
+    <div class="modal-content">
+        <span class="close-btn" aria-label="Закрыть">×</span>
+        <h3 id="modal14-title" class="shimmer" data-lang-key="modal14-title">Космический шутер</h3>
+        <img src="images/14.png" alt="Космический шутер" loading="lazy">
+        <p data-lang-key="modal14-desc">Ретро-игра в жанре космического шутера.</p>
+    </div>
+</div>
+<div class="modal" id="modal15" role="dialog" aria-labelledby="modal15-title">
+    <div class="modal-content">
+        <span class="close-btn" aria-label="Закрыть">×</span>
+        <h3 id="modal15-title" class="shimmer" data-lang-key="modal15-title">Приложение для распознавания лиц</h3>
+        <img src="images/15.png" alt="Приложение для распознавания лиц" loading="lazy">
+        <p data-lang-key="modal15-desc">Приложение для распознавания лиц в реальном времени.</p>
+    </div>
+</div>
+<div class="modal" id="modal16" role="dialog" aria-labelledby="modal16-title">
+    <div class="modal-content">
+        <span class="close-btn" aria-label="Закрыть">×</span>
+        <h3 id="modal16-title" class="shimmer" data-lang-key="modal16-title">Планировщик задач</h3>
+        <img src="images/16.png" alt="Планировщик задач" loading="lazy">
+        <p data-lang-key="modal16-desc">Эффективное ПО для планирования задач.</p>
+    </div>
+</div>
+<div class="modal" id="modal17" role="dialog" aria-labelledby="modal17-title">
+    <div class="modal-content">
+        <span class="close-btn" aria-label="Закрыть">×</span>
+        <h3 id="modal17-title" class="shimmer" data-lang-key="modal17-title">ИИ-чатбот</h3>
+        <img src="images/17.png" alt="ИИ-чатбот" loading="lazy">
+        <p data-lang-key="modal17-desc">ИИ для поддержки клиентов.</p>
+    </div>
+</div>
+<div class="modal" id="modal18" role="dialog" aria-labelledby="modal18-title">
+    <div class="modal-content">
+        <span class="close-btn" aria-label="Закрыть">×</span>
+        <h3 id="modal18-title" class="shimmer" data-lang-key="modal18-title">Игра-головоломка</h3>
+        <img src="images/18.png" alt="Игра-головоломка" loading="lazy">
+        <p data-lang-key="modal18-desc">Логическая игра-головоломка для всех возрастов.</p>
+    </div>
+</div>
+<div class="modal" id="modal19" role="dialog" aria-labelledby="modal19-title">
+    <div class="modal-content">
+        <span class="close-btn" aria-label="Закрыть">×</span>
+        <h3 id="modal19-title" class="shimmer" data-lang-key="modal19-title">Детектор объектов</h3>
+        <img src="images/19.png" alt="Детектор объектов" loading="lazy">
+        <p data-lang-key="modal19-desc">Система для обнаружения объектов в реальном времени.</p>
+    </div>
+</div>
+<div class="modal" id="modal20" role="dialog" aria-labelledby="modal20-title">
+    <div class="modal-content">
+        <span class="close-btn" aria-label="Закрыть">×</span>
+        <h3 id="modal20-title" class="shimmer" data-lang-key="modal20-title">Трекер бюджета</h3>
+        <img src="images/20.png" alt="Трекер бюджета" loading="lazy">
+        <p data-lang-key="modal20-desc">ПО для управления личными финансами.</p>
+    </div>
+</div>
+<button id="scroll-top" title="Наверх" aria-label="Наверх" data-lang-key="scroll-top">↑</button>
+<footer>
+    <div class="container">
+        <p data-lang-key="footer-text">© <span id="current-year"></span> Алексей Кузнецов</p>
+    </div>
+</footer>
+<div id="custom-cursor" aria-hidden="true"></div>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js"></script>
+<script src="script.js"></script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9363775a592144f3',t:'MTc0NTY0MzA5OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9363c53b8c59bfc9',t:'MTc0NTY0NjI4OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
