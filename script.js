@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     gsap.registerPlugin(ScrollTrigger);
 
     // Centralized Name
-    const userName = "Алексей Кузнецов";
+    const userName = "Алексей";
     document.getElementById("header-name").textContent = "Сделанные проекты и реализуемые";
     document.getElementById("hero-name").textContent = userName;
     document.getElementById("terminal-name").textContent = `${userName} - Разработчик`;
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "nav-about": "Обо мне",
             "nav-contact": "Контакты",
             "hero-name": userName,
-            "hero-desc": "Привет, я Алексей Кузнецов! Увлекаюсь созданием ИИ, захватывающих игр и полезного программного обеспечения. От нейронных сетей до интерактивных развлечений — я стремлюсь создавать вдохновляющие и запоминающиеся проекты. Буду рад воплотить ваши идеи в реальность!",
+            "hero-desc": "Привет, я Алексей! Увлекаюсь созданием ИИ, захватывающих игр и полезного программного обеспечения. От нейронных сетей до интерактивных развлечений — я стремлюсь создавать вдохновляющие и запоминающиеся проекты. Буду рад воплотить ваши идеи в реальность!",
             "projects-heading": "Проекты",
             "project-count": "Всего: <span id='total-projects'>20</span> | Показано: <span id='visible-projects'>20</span>",
             "search-placeholder": "Поиск проектов...",
