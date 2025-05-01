@@ -109,8 +109,8 @@ document.addEventListener("DOMContentLoaded", () => {
             "nav-projects": "Projects",
             "nav-about": "About",
             "nav-contact": "Contact",
-            "hero-name": "Alexey Kuznetsov",
-            "hero-desc": "Hi, I’m Alexey Kuznetsov! A coder crafting AI, games, and software. From neural networks to engaging games, I build experiences that inspire. Let’s create something amazing!",
+            "hero-name": "Alexey",
+            "hero-desc": "Hi, I’m Alexey! A coder crafting AI, games, and software. From neural networks to engaging games, I build experiences that inspire. Let’s create something amazing!",
             "projects-heading": "Projects",
             "project-count": "Total: <span id='total-projects'>20</span> | Visible: <span id='visible-projects'>20</span>",
             "search-placeholder": "Search projects...",
@@ -178,7 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "modal20-title": "Budget Tracker",
             "modal20-desc": "Software for managing personal finances.",
             "scroll-top": "↑",
-            "footer-text": `© <span id="current-year"></span> Alexey Kuznetsov`
+            "footer-text": `© <span id="current-year"></span> Alexey`
         }
     };
 
