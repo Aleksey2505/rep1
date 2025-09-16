@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "hero-name": userName,
             "hero-desc": "Привет, я Алексей Кузнецов! Увлекаюсь созданием ИИ, захватывающих игр и полезного программного обеспечения. От нейронных сетей до интерактивных развлечений — я стремлюсь создавать вдохновляющие и запоминающиеся проекты. Буду рад воплотить ваши идеи в реальность!",
             "projects-heading": "Проекты",
-            "project-count": "Всего: <span id='total-projects'>20</span> | Показано: <span id='visible-projects'>20</span>",
+            "project-count": "Всего: <span id='total-projects'>31</span> | Показано: <span id='visible-projects'>31</span>",
             "search-placeholder": "Поиск проектов...",
             "filter-all": "Все 🧬",
             "filter-ai": "ИИ 🧠",
@@ -126,10 +126,8 @@ document.addEventListener("DOMContentLoaded", () => {
             "modal30-desc": "Копия сайта PinUp для заметок.",
             "modal31-title": "Анализ нефти",
             "modal31-desc": "Анализ данных нефти с биржи и создание отчета.",
-
-
-
-
+            "modal32-title": "Программирование дрона Tello с машинным зрением<",
+            "modal32-desc": "Дрон не просто летает, а умно следует за вами не врезаясь в стены. Идеально для узких помещений, где каждый сантиметр на счету",
 
 
 
@@ -365,7 +363,8 @@ document.addEventListener("DOMContentLoaded", () => {
         { id: 28, category: "software", img: "images/28.png", modal: "modal28" },
         { id: 29, category: "software", img: "images/29.png", modal: "modal29" },
         { id: 30, category: "software", img: "images/30.png", modal: "modal30" },
-        { id: 31, category: "software", img: "images/31.png", modal: "modal31" }
+        { id: 31, category: "software", img: "images/31.png", modal: "modal31" },
+        { id: 32, category: "ai" , img: "images/32.png", modal: "modal32"}
     ];
 
 
