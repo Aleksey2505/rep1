@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     gsap.registerPlugin(ScrollTrigger);
 
     // Centralized Name
-    const userName = "Алексей";
+    const userName = "Алексей Кузнецов";
     document.getElementById("header-name").textContent = "Сделанные проекты и реализуемые";
     document.getElementById("hero-name").textContent = userName;
     document.getElementById("terminal-name").textContent = `${userName} - Разработчик`;
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "nav-about": "Обо мне",
             "nav-contact": "Контакты",
             "hero-name": userName,
-            "hero-desc": "Привет, я Алексей! Увлекаюсь созданием ИИ, захватывающих игр и полезного программного обеспечения. От нейронных сетей до интерактивных развлечений — я стремлюсь создавать вдохновляющие и запоминающиеся проекты. Буду рад воплотить ваши идеи в реальность!",
+            "hero-desc": "Привет, я Алексей Кузнецов! Увлекаюсь созданием ИИ, захватывающих игр и полезного программного обеспечения. От нейронных сетей до интерактивных развлечений — я стремлюсь создавать вдохновляющие и запоминающиеся проекты. Буду рад воплотить ваши идеи в реальность!",
             "projects-heading": "Проекты",
             "project-count": "Всего: <span id='total-projects'>20</span> | Показано: <span id='visible-projects'>20</span>",
             "search-placeholder": "Поиск проектов...",
@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "modal8-title": "Клон Geometry Dash",
             "modal8-desc": "Динамичная игра-платформер.",
             "modal9-title": "Нейронная сеть NERPA",
-            "modal9-desc": "Модель глубокого обучения для обработки текста.",
+            "modal9-desc": "Модель глубокого обучения для распознаваний нерп, обученная на собственной датасете.",
             "modal10-title": "Калькулятор крыльев",
             "modal10-desc": "Инструмент для аэродинамического анализа крыльев.",
             "modal11-title": "Система управления складом",
@@ -101,6 +101,39 @@ document.addEventListener("DOMContentLoaded", () => {
             "modal19-desc": "С использованием управления и панорам Яндекс карт.",
             "modal20-title": "Матричный калькулятор",
             "modal20-desc": "Простой матричный калькулятор",
+
+
+
+            "modal21-title": "Генератор музыки",
+            "modal21-desc": "ИИ для генерации музыки на основе обученной модели с использованием Gradio, PrettyMIDI и PyTorch.",
+            "modal22-title": "Копии интерфейсов приложений",
+            "modal22-desc": "Копии интерфейсов приложений, включая Яндекс Браузер, Steam, Map Pilot и приложения для ИРНИТУ.",
+            "modal23-title": "Приложение Лиза Алерт",
+            "modal23-desc": "Приложение для поиска людей на карте, разработанное для Лиза Алерт.",
+            "modal24-title": "Телеграм-бот событий Иркутска",
+            "modal24-desc": "Бот для отображения событий Иркутска с картинками.",
+            "modal25-title": "Бот для расчета стоимости жилья",
+            "modal25-desc": "Телеграм-бот для расчета стоимости жилья для компании.",
+            "modal26-title": "Парсер JSON в COCO",
+            "modal26-desc": "Собственный парсер для конвертации JSON в формат COCO.",
+            "modal27-title": "Приложение для разметки",
+            "modal27-desc": "Собственное приложение для разметки данных.",
+            "modal28-title": "Парсер Ламоды и Лабиринта",
+            "modal28-desc": "Парсер для сбора данных с сайтов Ламода и Лабиринт.",
+            "modal29-title": "Анализ недвижимости",
+            "modal29-desc": "Анализ данных недвижимости из Excel после парсинга.",
+            "modal30-title": "Копия сайта PinUp",
+            "modal30-desc": "Копия сайта PinUp для заметок.",
+            "modal31-title": "Анализ нефти",
+            "modal31-desc": "Анализ данных нефти с биржи и создание отчета.",
+
+
+
+
+
+
+
+
             "scroll-top": "↑",
             "footer-text": `© <span id="current-year"></span> ${userName}`
         },
@@ -109,8 +142,8 @@ document.addEventListener("DOMContentLoaded", () => {
             "nav-projects": "Projects",
             "nav-about": "About",
             "nav-contact": "Contact",
-            "hero-name": "Alexey",
-            "hero-desc": "Hi, I’m Alexey! A coder crafting AI, games, and software. From neural networks to engaging games, I build experiences that inspire. Let’s create something amazing!",
+            "hero-name": "Alexey Kuznetsov",
+            "hero-desc": "Hi, I’m Alexey Kuznetsov! A coder crafting AI, games, and software. From neural networks to engaging games, I build experiences that inspire. Let’s create something amazing!",
             "projects-heading": "Projects",
             "project-count": "Total: <span id='total-projects'>20</span> | Visible: <span id='visible-projects'>20</span>",
             "search-placeholder": "Search projects...",
@@ -178,7 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "modal20-title": "Budget Tracker",
             "modal20-desc": "Software for managing personal finances.",
             "scroll-top": "↑",
-            "footer-text": `© <span id="current-year"></span> Alexey`
+            "footer-text": `© <span id="current-year"></span> Alexey Kuznetsov`
         }
     };
 
@@ -320,8 +353,23 @@ document.addEventListener("DOMContentLoaded", () => {
         { id: 17, category: "ai", img: "images/17.png", modal: "modal17" },
         { id: 18, category: "game", img: "images/18.png", modal: "modal18" },
         { id: 19, category: "vision", img: "images/19.png", modal: "modal19" },
-        { id: 20, category: "software", img: "images/20.png", modal: "modal20" }
+        { id: 20, category: "software", img: "images/20.png", modal: "modal20" },
+
+        { id: 21, category: "ai", img: "images/21.png", modal: "modal21" },
+        { id: 22, category: "software", img: "images/22.png", modal: "modal22" },
+        { id: 23, category: "software", img: "images/23.png", modal: "modal23" },
+        { id: 24, category: "software", img: "images/24.png", modal: "modal24" },
+        { id: 25, category: "software", img: "images/25.png", modal: "modal25" },
+        { id: 26, category: "software", img: "images/26.png", modal: "modal26" },
+        { id: 27, category: "software", img: "images/27.png", modal: "modal27" },
+        { id: 28, category: "software", img: "images/28.png", modal: "modal28" },
+        { id: 29, category: "software", img: "images/29.png", modal: "modal29" },
+        { id: 30, category: "software", img: "images/30.png", modal: "modal30" },
+        { id: 31, category: "software", img: "images/31.png", modal: "modal31" }
     ];
+
+
+
 
     const categoryIcons = {
         ai: "🧠",
